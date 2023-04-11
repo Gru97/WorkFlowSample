@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WFE.Console", "WFE.Console\WFE.Console.csproj", "{E09F3C35-2ACF-40B9-B654-0E5527CC7607}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFE.Test", "WFE.Test\WFE.Test.csproj", "{CC6B71E3-1C80-4A86-A848-273249004506}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E09F3C35-2ACF-40B9-B654-0E5527CC7607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E09F3C35-2ACF-40B9-B654-0E5527CC7607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E09F3C35-2ACF-40B9-B654-0E5527CC7607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E09F3C35-2ACF-40B9-B654-0E5527CC7607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC6B71E3-1C80-4A86-A848-273249004506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC6B71E3-1C80-4A86-A848-273249004506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC6B71E3-1C80-4A86-A848-273249004506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC6B71E3-1C80-4A86-A848-273249004506}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4AC7D503-F7E2-4DCF-A797-A43BE919C70A}
+	EndGlobalSection
+EndGlobal
