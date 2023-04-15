@@ -20,6 +20,7 @@ namespace WFE.Console.DefineContractExample.Domain
     }
     public enum State
     {
+        Imported,
         Reject,
         WaitingForPSP,
         Accepted

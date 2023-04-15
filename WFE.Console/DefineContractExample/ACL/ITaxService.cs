@@ -11,4 +11,12 @@ namespace WFE.Console.DefineContractExample.ACL
         string Get(string nationalCode);
     }
 
+    public class TaxService : ITaxService
+    {
+        public string Get(string nationalCode)
+        {
+            return "";
+        }
+    }
+
 }

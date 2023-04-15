@@ -35,13 +35,17 @@ namespace WFE.Console
                                 .If(data => data.IsTaxValid)
                                     .Do(then => then
                                         .StartWith<SendRequestToExternalApiStep>()
-                                        .Input(data=>data.Contract, step=>step.Contract))))
+                                        .Input(data=>data.Contract, step=>step.Contract)
+                                        .Output(data=>data.IsSentToPsp, step=>step.SentToPsp)
+                                        .EndWorkflow())))
+               
+                
 
                 .Then(context => System.Console.WriteLine("Rejected"));
         }
 
         public string Id => "DefineContractWorkflow";
-        public int Version { get; }
+        public int Version => 1;
     }
 
     public class DefineContractWorkflowData
@@ -50,6 +54,12 @@ namespace WFE.Console
         public bool IsNameValid { get; set; }
         public bool IsAccountNoValid { get; set; }
         public bool IsTaxValid { get; set; }
+        public bool IsSentToPsp { get; set; }
+
+        public DefineContractWorkflowData()
+        {
+            Contract=new Contract();
+        }
     }
 
    
@@ -84,6 +94,12 @@ public class CheckBankAccountValidationStep : StepBody
     public string AccountNo { get; set; }
     public bool IsValid { get; set; }
     private readonly IBankAccountService _bankAccountService;
+
+    public CheckBankAccountValidationStep(IBankAccountService bankAccountService)
+    {
+        _bankAccountService = bankAccountService;
+    }
+
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         Console.WriteLine("Checking bank account validation...");
@@ -93,8 +109,6 @@ public class CheckBankAccountValidationStep : StepBody
         return ExecutionResult.Next();
     }
 }
-
-
 
 public class CheckTaxDataValidationStep : StepBody
 {
@@ -123,6 +137,7 @@ public class CheckTaxDataValidationStep : StepBody
 public class SendRequestToExternalApiStep : StepBody
 {
     public Contract Contract { get; set; }
+    public bool SentToPsp { get; set; }
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         Console.WriteLine("Sending request to external API...");
@@ -131,16 +146,16 @@ public class SendRequestToExternalApiStep : StepBody
     }
 }
 
-public class RejectRequest:StepBody
-{
-    public string Message { get; set; }
-    public State State{ get; set; }
-    public override ExecutionResult Run(IStepExecutionContext context)
-    {
-        State = State.Reject;
+//public class RejectRequest:StepBody
+//{
+//    public string Message { get; set; }
+//    public State State{ get; set; }
+//    public override ExecutionResult Run(IStepExecutionContext context)
+//    {
+//        State = State.Reject;
         
-    }
-}
+//    }
+//}
 
 
 
