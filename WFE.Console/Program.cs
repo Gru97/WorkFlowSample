@@ -4,13 +4,14 @@ using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WFE.Console;
 using WFE.Console.DefineContractExample.ACL;
 using WFE.Console.DefineContractExample.Domain;
 
 // Create the service container
 var builder = new ServiceCollection()
-    .AddLogging()
+    .AddLogging(configure => configure.AddConsole())
     .AddScoped<IIdentityService, IdentityService>()
     .AddScoped<IBankAccountService, BankAccountService>()
     .AddScoped<ITaxService, TaxService>()
@@ -18,7 +19,7 @@ var builder = new ServiceCollection()
     .AddTransient<CheckBankAccountValidationStep>()
     .AddTransient<CheckTaxDataValidationStep>()
     .AddTransient<SendRequestToExternalApiStep>()
-    .AddWorkflow()
+    .AddWorkflow(x => x.UseSqlServer(@"Server=.;Database=WorkflowCore;Trusted_Connection=True;", true, true))
     .BuildServiceProvider();
 
 var workflowHost = builder.GetRequiredService<IWorkflowHost>();
@@ -34,7 +35,8 @@ try
 {
     await workflowHost.StartWorkflow("DefineContractWorkflow", new DefineContractWorkflowData()
     {
-        Contract = new Contract(){
+        Contract = new Contract()
+        {
             AccountNo = "00256666",
             BirthData = new System.DateTime(1997, 08, 25),
             ContractNo = "14020025366",
@@ -47,7 +49,11 @@ try
 
     }, null);
 
-    Console.ReadLine();
+
+    var workflowId = "405c4bf7-1b29-43ac-8b0e-0fa8ccca3b3e";
+    await workflowHost.ResumeWorkflow(workflowId);
+
+    Console.ReadKey();
     workflowHost.Stop();
 }
 catch (Exception e)

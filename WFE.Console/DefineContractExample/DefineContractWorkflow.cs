@@ -3,30 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 using WFE.Console;
 using WFE.Console.DefineContractExample.ACL;
 using WFE.Console.DefineContractExample.Domain;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
+using ILogger = Castle.Core.Logging.ILogger;
 
 namespace WFE.Console
 {
     public class DefineContractWorkflow:IWorkflow<DefineContractWorkflowData>
     {
+        private readonly ILogger<DefineContractWorkflow> _logger;
+
+        public DefineContractWorkflow(ILogger<DefineContractWorkflow> logger)
+        {
+            _logger = logger;
+        }
+
         public void Build(IWorkflowBuilder<DefineContractWorkflowData> builder)
         {
+            _logger.LogInformation("Beginning of Workflow ");
             builder
                 .StartWith<CheckNameValidationStep>()
                 .Input(step=>step.BirthDate, data=>data.Contract.BirthData)
                 .Input(step=>step.Name, data=>data.Contract.Name)
                 .Input(step=>step.NationalCode, data=>data.Contract.NationalCode)
                 .Output(data=>data.IsNameValid, step=>step.IsValid)
+                .OnError(WorkflowErrorHandling.Suspend)
                 .If(data=>data.IsNameValid)
                     .Do(then=>then
                         .StartWith<CheckBankAccountValidationStep>()
                         .Input(step => step.Name, data => data.Contract.Name)
                         .Input(step => step.AccountNo, data => data.Contract.AccountNo)
                         .Output(data => data.IsAccountNoValid, step => step.IsValid)
+                        .OnError(WorkflowErrorHandling.Suspend)
                         .If(data=>data.IsAccountNoValid)
                             .Do(then=>then
                                 .StartWith<CheckTaxDataValidationStep>()
@@ -72,15 +85,17 @@ public class CheckNameValidationStep : StepBody
     public DateTime BirthDate { get; set; }
     public bool IsValid { get; set; }
     private readonly IIdentityService _identityValidator;
+    private readonly ILogger<CheckNameValidationStep> _logger;
 
-    public CheckNameValidationStep(IIdentityService identityValidator)
+    public CheckNameValidationStep(IIdentityService identityValidator, ILogger<CheckNameValidationStep> logger)
     {
         _identityValidator = identityValidator;
+        _logger = logger;
     }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Console.WriteLine("Checking name validation...");
+        _logger.LogInformation("Checking name validation...");
         var name= _identityValidator.GetIdentity(NationalCode, BirthDate);
         if (name == Name)
             IsValid = true;
@@ -94,15 +109,17 @@ public class CheckBankAccountValidationStep : StepBody
     public string AccountNo { get; set; }
     public bool IsValid { get; set; }
     private readonly IBankAccountService _bankAccountService;
-
-    public CheckBankAccountValidationStep(IBankAccountService bankAccountService)
+    private readonly ILogger<CheckBankAccountValidationStep> _logger;
+    public CheckBankAccountValidationStep(IBankAccountService bankAccountService, ILogger<CheckBankAccountValidationStep> logger)
     {
         _bankAccountService = bankAccountService;
+        _logger = logger;
     }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Console.WriteLine("Checking bank account validation...");
+        //throw new Exception("Bug Occurred");
+        _logger.LogInformation("Checking bank account validation...");
         var name = _bankAccountService.Get(AccountNo);
         if (name == Name)
             IsValid = true;
@@ -116,23 +133,22 @@ public class CheckTaxDataValidationStep : StepBody
     public string NationalCode { get; set; }
     public bool IsValid { get; set; }
     private readonly ITaxService _taxService;
-
-    public CheckTaxDataValidationStep(ITaxService taxService)
+    private readonly ILogger<CheckTaxDataValidationStep> _logger;
+    public CheckTaxDataValidationStep(ITaxService taxService, ILogger<CheckTaxDataValidationStep> logger)
     {
         _taxService = taxService;
+        _logger = logger;
     }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Console.WriteLine("Checking tax data validation...");
+        _logger.LogInformation("Checking tax data validation...");
         var taxCode= _taxService.Get(NationalCode);
         if (taxCode == TaxCode)
             IsValid = true;
         return ExecutionResult.Next();
     }
 }
-
-
 
 public class SendRequestToExternalApiStep : StepBody
 {
@@ -145,17 +161,6 @@ public class SendRequestToExternalApiStep : StepBody
         return ExecutionResult.Next();
     }
 }
-
-//public class RejectRequest:StepBody
-//{
-//    public string Message { get; set; }
-//    public State State{ get; set; }
-//    public override ExecutionResult Run(IStepExecutionContext context)
-//    {
-//        State = State.Reject;
-        
-//    }
-//}
 
 
 
