@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using WFE.Console;
 using WFE.Console.DefineContractExample.ACL;
+using WFE.Console.DefineContractExample.Application;
 using WFE.Console.DefineContractExample.Domain;
 using WorkflowCore.Interface;
 using Xunit;
