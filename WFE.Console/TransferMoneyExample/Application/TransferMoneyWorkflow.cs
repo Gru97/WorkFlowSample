@@ -24,6 +24,7 @@ namespace WFE.Console.TransferMoneyExample.Application
         public int Version => 1;
 
         public void Build(IWorkflowBuilder<TransferMoneyData> builder)
+        
         {
             builder.StartWith<CheckAccountBalance>()
                 .Input(step => step.AccountNo, data => data.FromAccount)

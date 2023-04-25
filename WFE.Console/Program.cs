@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WFE.Console;
 using WFE.Console.DefineContractExample.ACL;
 using WFE.Console.DefineContractExample.Application;
 using WFE.Console.DefineContractExample.Domain;
@@ -24,7 +25,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(async (context, services) =>
     {
         var sp = services.AddLogging(configure => configure.AddConsole())
-            //.AddSingleton<Application, Application>()
+            .AddHostedService<InquiryWorker>()
             .AddScoped<IIdentityService, IdentityService>()
             .AddScoped<IBankAccountService, BankAccountService>()
             .AddScoped<ITaxService, TaxService>()
@@ -56,9 +57,27 @@ var workflowHost = host.Services.GetRequiredService<IWorkflowHost>();
 workflowHost.RegisterWorkflow<DefineContractWorkflow, DefineContractWorkflowData>();
 workflowHost.RegisterWorkflow<TransferMoneyWorkflow, TransferMoneyData>();
 workflowHost.Start();
-await workflowHost.StartWorkflow("TransferMoneyWorkflow", new TransferMoneyData(){FromAccount = "5245688" , ToAccount = "1258823" , Amount = 100},null);
 //await host.Services.GetRequiredService<Application>().Starter();
-Console.ReadKey();
+
+//await workflowHost.StartWorkflow("TransferMoneyWorkflow", new TransferMoneyData(){FromAccount = "5245688" , ToAccount = "1258823" , Amount = 100},null);
+await workflowHost.StartWorkflow("DefineContractWorkflow", new DefineContractWorkflowData()
+{
+    Contract = new Contract()
+    {
+        AccountNo = "00256666",
+        BirthData = new System.DateTime(1997, 08, 25),
+        ContractNo = "14020025366",
+        LastName = "Hasani",
+        Name = "MashtHasan",
+        NationalCode = "12366363",
+        TaxCode = "12542",
+        State = State.Imported
+    }
+}, null);
+
+host.Run();
+
+//Console.ReadKey();
 
 
 //public class Application

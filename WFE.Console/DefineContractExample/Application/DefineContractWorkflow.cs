@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using WFE.Console.DefineContractExample.Domain;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -40,6 +41,9 @@ namespace WFE.Console.DefineContractExample.Application
                                         .StartWith<SendRequestToExternalApiStep>()
                                         .Input(data => data.Contract, step => step.Contract)
                                         .Output(data => data.IsSentToPsp, step => step.SentToPsp)
+                                        .Activity("activity-1", (data) => data.Contract.ContractNo)
+                                        .Output(data=>data.Contract.State, step=> step.Result)
+                                        .Then(context=> { System.Console.WriteLine("sdfds"); })
                                         .EndWorkflow())))
 
 
