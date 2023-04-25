@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WFE.Console.TransferMoneyExample.Infra.Migrations
+namespace WFE.Console.Migrations
 {
-    public partial class Account_Entity : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,17 +26,17 @@ namespace WFE.Console.TransferMoneyExample.Infra.Migrations
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "Id", "AccountNumber", "Balance", "Owner" },
-                values: new object[] { new Guid("1179372c-1ce0-4cc5-a2f3-35b0c69ae035"), "1258823", 200m, "Gholi" });
+                values: new object[] { new Guid("020df25b-d01b-4a3b-9c2e-d73a31f2d1dd"), "9852333", 200m, "Taghi" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "Id", "AccountNumber", "Balance", "Owner" },
-                values: new object[] { new Guid("5dbf28b7-5a55-48af-9682-240ceb0a090d"), "5245688", 200m, "Kokab" });
+                values: new object[] { new Guid("1a09b61b-bfd1-44f6-adb9-bf2e17c2e6f1"), "5245688", 200m, "Kokab" });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "Id", "AccountNumber", "Balance", "Owner" },
-                values: new object[] { new Guid("8629049e-5bbc-4ac0-ba78-864baafe1f00"), "9852333", 200m, "Taghi" });
+                values: new object[] { new Guid("e07ed267-a765-431c-a420-941fd5cf429f"), "1258823", 200m, "Gholi" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

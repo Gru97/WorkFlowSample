@@ -9,11 +9,11 @@ using WorkflowCore.Persistence.SqlServer;
 
 namespace WFE.Console.TransferMoneyExample.Infra
 {
-    public class ApplicationContext: SqlServerContext
+    public class ApplicationContext: DbContext
     {
         public DbSet<Account> Accounts { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options):base("Server=.;Database=WorkflowCore;Trusted_Connection=True;TrustServerCertificate=True;Encrypt=false")
+        public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

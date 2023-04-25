@@ -34,13 +34,18 @@ var host = Host.CreateDefaultBuilder(args)
             .AddTransient<SendRequestToExternalApiStep>()
             .AddTransient<DepositMoney>()
             .AddTransient<WithdrawMoney>()
+            .AddTransient<UndoTransferMoney>()
             .AddTransient<CheckAccountBalance>()
             .AddTransient<IAccountRepository, AccountRepository>()
             .AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(context.Configuration.GetConnectionString("Database"));
             })
-            .AddWorkflow(x => x.UseSqlServer(context.Configuration.GetConnectionString("Workflow"), true, true))
+            .AddWorkflow(x =>
+            {
+                x.UseSqlServer(context.Configuration.GetConnectionString("Workflow"), true, true);
+                
+            })
             .BuildServiceProvider();
 
     }).Build();

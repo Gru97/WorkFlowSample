@@ -8,7 +8,7 @@ using WFE.Console.TransferMoneyExample.Infra;
 
 #nullable disable
 
-namespace WFE.Console.TransferMoneyExample.Infra.Migrations
+namespace WFE.Console.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -47,21 +47,21 @@ namespace WFE.Console.TransferMoneyExample.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1179372c-1ce0-4cc5-a2f3-35b0c69ae035"),
+                            Id = new Guid("e07ed267-a765-431c-a420-941fd5cf429f"),
                             AccountNumber = "1258823",
                             Balance = 200m,
                             Owner = "Gholi"
                         },
                         new
                         {
-                            Id = new Guid("8629049e-5bbc-4ac0-ba78-864baafe1f00"),
+                            Id = new Guid("020df25b-d01b-4a3b-9c2e-d73a31f2d1dd"),
                             AccountNumber = "9852333",
                             Balance = 200m,
                             Owner = "Taghi"
                         },
                         new
                         {
-                            Id = new Guid("5dbf28b7-5a55-48af-9682-240ceb0a090d"),
+                            Id = new Guid("1a09b61b-bfd1-44f6-adb9-bf2e17c2e6f1"),
                             AccountNumber = "5245688",
                             Balance = 200m,
                             Owner = "Kokab"

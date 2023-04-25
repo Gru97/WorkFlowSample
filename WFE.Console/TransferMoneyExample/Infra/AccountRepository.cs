@@ -20,6 +20,7 @@ public class AccountRepository : IAccountRepository
 
     public void Update(Account account)
     {
-        throw new NotImplementedException();
+        _context.Accounts.Update(account);
+        _context.SaveChanges();
     }
 }

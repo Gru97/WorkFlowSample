@@ -34,5 +34,10 @@ namespace WFE.Console.TransferMoneyExample.Domain
         {
             Balance += amount;
         }
+
+        public void SetBalance(decimal balance)
+        {
+            Balance = balance;
+        }
     }
 }
